@@ -9,14 +9,18 @@ import herousImage from '../../assets/heroes.png'
 import logoImage from '../../assets/logo.svg'
 
 export default function Logon(props){
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const history = useHistory()
+    
     async function login(e){
         e.preventDefault()
-        const data = {id}
+        const data = {email, password}
 
         try {
           const response =   await api.post('session', data)
-          localStorage.setItem('ongId', id);
+          
+          localStorage.setItem('token', response.data.token);
           localStorage.setItem('ongName', response.data.name);
           history.push('/profile')
         } catch (err) {
@@ -24,7 +28,7 @@ export default function Logon(props){
         }
     }
 
-    const [id, setId] = useState('');
+    
     return (
         <header>
             <div className="logon-container">
@@ -35,9 +39,15 @@ export default function Logon(props){
                     <h1>Faça seu Login</h1>
 
                     <input 
-                    placeholder="Sua ID"
-                    value={id}
-                    onChange= {e => setId(e.target.value)}/>
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange= {e => setEmail(e.target.value)}/>
+                    <input 
+                    placeholder="Senha"
+                    type="password"
+                    value={password}
+                    onChange= {e => setPassword(e.target.value)}/>
                     <button type="submit" className="button">Entrar</button>
 
                 <Link className="back-link" to="/register">
